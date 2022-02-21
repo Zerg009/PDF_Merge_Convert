@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 namespace PDF_Merge_Convert
 {
     public partial class Form1 : Form
@@ -19,12 +19,13 @@ namespace PDF_Merge_Convert
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            String asd = "";
-            init();
+           // MagickNET.Initialize();
         }
-        private void init()
+
+        private void Button1_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("LOsharaH!");
+            HEIC_JPG form1 = new HEIC_JPG();
+            form1.Show();
         }
     }
 }
