@@ -15,13 +15,15 @@ namespace PDF_Merge_Convert
     public partial class HEIC_JPG : Form
     {
         OpenFileDialog fileDialog = new OpenFileDialog();
+        String currentFile = "";
+        String newDirectoryPath;
         public HEIC_JPG()
         {
             InitializeComponent();
             MagickNET.Initialize();
             Init_FileDialog();
         }
-
+        
         private void OpenFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
 
@@ -42,16 +44,18 @@ namespace PDF_Merge_Convert
             {
                 int index = file.LastIndexOf('\\')+1;
                 int len = file.Length;
-                MessageBox.Show(file.Substring(index,len-index));
+                //MessageBox.Show(file.Substring(index,len-index));
             }
 
         }
 
         private void ConvertBtn_Click(object sender, EventArgs e)
         {
-            String path = "C:\\Users\\semen\\source\\repos\\PDF_Merge_Convert2\\images\\";
-            string[] allfiles = Directory.GetFiles(path, "*.heic", SearchOption.AllDirectories);
-            String newDirectoryPath = path + "HEIC_JPG_" + DateTime.Now.ToString("h:mm:ss").Replace(':', '_');
+            // String path = "C:\\Users\\semen\\source\\repos\\PDF_Merge_Convert2\\images\\";
+            //string[] allfiles = Directory.GetFiles(path, "*.heic", SearchOption.AllDirectories);
+            String path = fileDialog.FileNames[0];
+            int index=path.LastIndexOf('\\');
+            newDirectoryPath = path.Substring(0,index+1) + "HEIC_JPG_" + DateTime.Now.ToString("h:mm:ss").Replace(':', '_');
             // vipsimage.WriteToFile(path+"sample11.jpg");
             try
             {
@@ -70,12 +74,28 @@ namespace PDF_Merge_Convert
                 MessageBox.Show("The process failed: {0}", ex.ToString());
             }
 
-            foreach (var file in allfiles)
+            backgroundWorker1.RunWorkerAsync();
+            
+            
+        }
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            ConvertImgAsync();
+        }
+        private void ConvertImgAsync()
+        {
+            foreach (var file in fileDialog.FileNames)
             {
                 FileInfo info = new FileInfo(file);
+                currentFile = file;
                 int found = info.Name.IndexOf(".heic");
+                if (found == -1)
+                {
+                    found = info.Name.IndexOf(".HEIC");
+                }
                 String outputPath = newDirectoryPath + "\\" + info.Name.Substring(0, found) + ".jpg";
-                if (!File.Exists(path))
+
+                if (!File.Exists(outputPath))
                 {
                     using (MagickImage image = new MagickImage(info.FullName))
                     {
@@ -83,7 +103,29 @@ namespace PDF_Merge_Convert
                         image.Write(outputPath);
                     }
                 }
+
+                //backgroundWorker1.DoWork += backgroundWorker1_DoWork;
             }
+            
+
+        }
+
+        private void BackgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            ConvertLabel.Text = "Finished";
+            MessageBox.Show("Converting finished!\nCheck:" + newDirectoryPath, "Finished");
+            this.backgroundWorker1.CancelAsync();
+        }
+        private void UpdateLabel(String file)
+        { 
+            int index = file.LastIndexOf('\\') + 1;
+            // Setting the text of Conversion label with the current file
+            ConvertLabel.Text = file.Substring(index, file.Length - index);
+        }
+        private void BackgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            MessageBox.Show(e.ToString());
+            //UpdateLabel();
         }
     }
 }
