@@ -32,8 +32,6 @@
             this.BrowseBtn = new System.Windows.Forms.Button();
             this.ConvertBtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.ConvertLabel = new System.Windows.Forms.Label();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -43,7 +41,7 @@
             // 
             // BrowseBtn
             // 
-            this.BrowseBtn.Location = new System.Drawing.Point(12, 12);
+            this.BrowseBtn.Location = new System.Drawing.Point(15, 34);
             this.BrowseBtn.Name = "BrowseBtn";
             this.BrowseBtn.Size = new System.Drawing.Size(133, 44);
             this.BrowseBtn.TabIndex = 0;
@@ -53,7 +51,7 @@
             // 
             // ConvertBtn
             // 
-            this.ConvertBtn.Location = new System.Drawing.Point(163, 12);
+            this.ConvertBtn.Location = new System.Drawing.Point(173, 34);
             this.ConvertBtn.Name = "ConvertBtn";
             this.ConvertBtn.Size = new System.Drawing.Size(140, 44);
             this.ConvertBtn.TabIndex = 1;
@@ -64,30 +62,23 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 104);
+            this.label1.Location = new System.Drawing.Point(12, 92);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(77, 13);
+            this.label1.Size = new System.Drawing.Size(76, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Converting file:";
-            // 
-            // ConvertLabel
-            // 
-            this.ConvertLabel.AutoSize = true;
-            this.ConvertLabel.Location = new System.Drawing.Point(96, 104);
-            this.ConvertLabel.Name = "ConvertLabel";
-            this.ConvertLabel.Size = new System.Drawing.Size(0, 13);
-            this.ConvertLabel.TabIndex = 3;
+            this.label1.Text = "Select images.";
             // 
             // HEIC_JPG
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(486, 311);
-            this.Controls.Add(this.ConvertLabel);
+            this.ClientSize = new System.Drawing.Size(339, 121);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.ConvertBtn);
             this.Controls.Add(this.BrowseBtn);
+            this.MaximizeBox = false;
             this.Name = "HEIC_JPG";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "HEIC_JPG";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -100,7 +91,5 @@
         private System.Windows.Forms.Button BrowseBtn;
         private System.Windows.Forms.Button ConvertBtn;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label ConvertLabel;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }

@@ -35,17 +35,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LibHeifSharp, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LibHeifSharp.2.1.0\lib\net46\LibHeifSharp.dll</HintPath>
-    </Reference>
     <Reference Include="Magick.NET-Q16-AnyCPU, Version=9.1.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
       <HintPath>..\packages\Magick.NET-Q16-AnyCPU.9.1.2\lib\netstandard20\Magick.NET-Q16-AnyCPU.dll</HintPath>
     </Reference>
     <Reference Include="Magick.NET.Core, Version=9.1.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
       <HintPath>..\packages\Magick.NET.Core.9.1.2\lib\net20\Magick.NET.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="NetVips, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NetVips.2.1.0\lib\net452\NetVips.dll</HintPath>
     </Reference>
     <Reference Include="Syroot.KnownFolders, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Syroot.Windows.IO.KnownFolders.1.2.3\lib\netstandard2.0\Syroot.KnownFolders.dll</HintPath>
@@ -119,9 +113,5 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Magick.NET-Q16-AnyCPU.9.1.2\build\netstandard20\Magick.NET-Q16-AnyCPU.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Magick.NET-Q16-AnyCPU.9.1.2\build\netstandard20\Magick.NET-Q16-AnyCPU.targets'))" />
-    <Error Condition="!Exists('..\packages\NetVips.Native.win-x64.8.12.2\build\net45\NetVips.Native.win-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NetVips.Native.win-x64.8.12.2\build\net45\NetVips.Native.win-x64.targets'))" />
-    <Error Condition="!Exists('..\packages\NetVips.Native.win-x86.8.12.2\build\net45\NetVips.Native.win-x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NetVips.Native.win-x86.8.12.2\build\net45\NetVips.Native.win-x86.targets'))" />
   </Target>
-  <Import Project="..\packages\NetVips.Native.win-x64.8.12.2\build\net45\NetVips.Native.win-x64.targets" Condition="Exists('..\packages\NetVips.Native.win-x64.8.12.2\build\net45\NetVips.Native.win-x64.targets')" />
-  <Import Project="..\packages\NetVips.Native.win-x86.8.12.2\build\net45\NetVips.Native.win-x86.targets" Condition="Exists('..\packages\NetVips.Native.win-x86.8.12.2\build\net45\NetVips.Native.win-x86.targets')" />
 </Project>

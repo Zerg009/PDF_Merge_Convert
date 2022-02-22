@@ -15,7 +15,7 @@ namespace PDF_Merge_Convert
     public partial class HEIC_JPG : Form
     {
         OpenFileDialog fileDialog = new OpenFileDialog();
-        String currentFile = "";
+        
         String newDirectoryPath;
         public HEIC_JPG()
         {
@@ -49,14 +49,13 @@ namespace PDF_Merge_Convert
 
         }
 
-        private async void ConvertBtn_Click(object sender, EventArgs e)
+        private void ConvertBtn_Click(object sender, EventArgs e)
         {
-            // String path = "C:\\Users\\semen\\source\\repos\\PDF_Merge_Convert2\\images\\";
-            //string[] allfiles = Directory.GetFiles(path, "*.heic", SearchOption.AllDirectories);
+            label1.Text = "Waiting for conversion...";
+            label1.Refresh();
             String path = fileDialog.FileNames[0];
             int index=path.LastIndexOf('\\');
             newDirectoryPath = path.Substring(0,index+1) + "HEIC_JPG_" + DateTime.Now.ToString("h:mm:ss").Replace(':', '_');
-            // vipsimage.WriteToFile(path+"sample11.jpg");
             try
             {
                 // Determine whether the directory exists.
@@ -74,48 +73,26 @@ namespace PDF_Merge_Convert
                 MessageBox.Show("The process failed: {0}", ex.ToString());
             }
 
-            foreach (var file in fileDialog.FileNames)
+            Parallel.ForEach(fileDialog.FileNames, file =>
             {
                 FileInfo info = new FileInfo(file);
-                UpdateLabel(file);
-               // currentFile = file;
                 int found = info.Name.IndexOf(".heic");
                 if (found == -1)
                 {
                     found = info.Name.IndexOf(".HEIC");
                 }
                 String outputPath = newDirectoryPath + "\\" + info.Name.Substring(0, found) + ".jpg";
-                /*Task t = Task.Run(() => {
-                    MessageBox.Show("Started new task");
-                    ConvertImage(outputPath, info);
-                });*/
-                await Task.Run(() => {
-                    ConvertImage(outputPath, info);
-                });
-                //t.Wait();
-
-                //backgroundWorker1.DoWork += backgroundWorker1_DoWork;
-            }
-            ConvertLabel.Text = "Finished";
-            MessageBox.Show("Converting finished!\nCheck:" + newDirectoryPath, "Finished");
-        }
-        private void ConvertImage(String outputPath, FileInfo info)
-        {
-            if (!File.Exists(outputPath))
-            {
-                using (MagickImage image = new MagickImage(info.FullName))
+                if (!File.Exists(outputPath))
                 {
-                    // Save frame as jpg
-                    image.Write(outputPath);
+                    using (MagickImage image = new MagickImage(info.FullName))
+                    {
+                        // Save frame as jpg
+                        image.Write(outputPath);
+                    }
                 }
-            }
-        }
-           
-        private void UpdateLabel(String file)
-        { 
-            int index = file.LastIndexOf('\\') + 1;
-            // Setting the text of Conversion label with the current file
-            ConvertLabel.Text = file.Substring(index, file.Length - index);
+            });
+            label1.Text = "Finished!";
+            MessageBox.Show("Converting finished!\nCheck:" + newDirectoryPath, "Finished");
         }
 
     }
