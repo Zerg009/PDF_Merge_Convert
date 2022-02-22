@@ -27,5 +27,10 @@ namespace PDF_Merge_Convert
             HEIC_JPG form1 = new HEIC_JPG();
             form1.Show();
         }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

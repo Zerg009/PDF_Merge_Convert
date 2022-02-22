@@ -14,7 +14,7 @@ namespace PDF_Merge_Convert
 {
     public partial class HEIC_JPG : Form
     {
-        OpenFileDialog fileDialog = new OpenFileDialog();
+        readonly OpenFileDialog fileDialog = new OpenFileDialog();
         
         String newDirectoryPath;
         public HEIC_JPG()
