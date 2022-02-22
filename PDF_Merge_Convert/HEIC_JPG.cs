@@ -49,7 +49,7 @@ namespace PDF_Merge_Convert
 
         }
 
-        private void ConvertBtn_Click(object sender, EventArgs e)
+        private async void ConvertBtn_Click(object sender, EventArgs e)
         {
             // String path = "C:\\Users\\semen\\source\\repos\\PDF_Merge_Convert2\\images\\";
             //string[] allfiles = Directory.GetFiles(path, "*.heic", SearchOption.AllDirectories);
@@ -85,18 +85,19 @@ namespace PDF_Merge_Convert
                     found = info.Name.IndexOf(".HEIC");
                 }
                 String outputPath = newDirectoryPath + "\\" + info.Name.Substring(0, found) + ".jpg";
-         
-                Parallel.Invoke(() => 
-                                {
-                                    MessageBox.Show("Started new task");
-                                    ConvertImage(outputPath, info);
-                                });
-               
-                ConvertLabel.Text = "Finished";
-                MessageBox.Show("Converting finished!\nCheck:" + newDirectoryPath, "Finished");
+                /*Task t = Task.Run(() => {
+                    MessageBox.Show("Started new task");
+                    ConvertImage(outputPath, info);
+                });*/
+                await Task.Run(() => {
+                    ConvertImage(outputPath, info);
+                });
+                //t.Wait();
 
                 //backgroundWorker1.DoWork += backgroundWorker1_DoWork;
             }
+            ConvertLabel.Text = "Finished";
+            MessageBox.Show("Converting finished!\nCheck:" + newDirectoryPath, "Finished");
         }
         private void ConvertImage(String outputPath, FileInfo info)
         {
