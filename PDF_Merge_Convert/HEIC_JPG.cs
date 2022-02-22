@@ -40,13 +40,6 @@ namespace PDF_Merge_Convert
         private void BrowseBtn_Click(object sender, EventArgs e)
         {
             fileDialog.ShowDialog();
-            foreach (String file in fileDialog.FileNames)
-            {
-                int index = file.LastIndexOf('\\')+1;
-                int len = file.Length;
-                //MessageBox.Show(file.Substring(index,len-index));
-            }
-
         }
 
         private void ConvertBtn_Click(object sender, EventArgs e)

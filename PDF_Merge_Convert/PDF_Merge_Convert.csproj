@@ -75,6 +75,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="JPG2PDF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="JPG2PDF.Designer.cs">
+      <DependentUpon>JPG2PDF.cs</DependentUpon>
+    </Compile>
     <Compile Include="HEIC_JPG.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,6 +94,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="HEIC_JPG.resx">
       <DependentUpon>HEIC_JPG.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="JPG2PDF.resx">
+      <DependentUpon>JPG2PDF.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

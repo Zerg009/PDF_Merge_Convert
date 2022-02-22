@@ -30,7 +30,8 @@ namespace PDF_Merge_Convert
 
         private void Button2_Click(object sender, EventArgs e)
         {
-
+            JPG2PDF form2 = new JPG2PDF();
+            form2.Show();
         }
     }
 }
