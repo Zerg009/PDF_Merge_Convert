@@ -30,7 +30,7 @@ namespace PDF_Merge_Convert
             fileDialog.InitialDirectory = downloadsPath;
             fileDialog.Title = "Select JPG/PNG files.";
             fileDialog.DefaultExt = "jpg";
-            fileDialog.Filter = "Image Files|*.jpg;*.png";
+            fileDialog.Filter = "Image Files|*.jpg;*.png;*.jpeg";
             fileDialog.Multiselect = true;
         }
         private void BrowseBtn_Click(object sender, EventArgs e)
@@ -45,31 +45,48 @@ namespace PDF_Merge_Convert
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            PdfDocument pdfdocument = new PdfDocument();
-            foreach (var file in fileDialog.FileNames)
+            String newDirectoryPath="";
+            if ((fileDialog.FileNames).Length!=0)
             {
-                // Add to pdf all the files from FileDialog
-                PdfPage page = pdfdocument.AddPage();
-                // temp incrementing
-                page_num++;
-                XGraphics gfx = XGraphics.FromPdfPage(page);
-                XImage image = XImage.FromFile(file);
-                if (image.PixelWidth<image.PixelHeight)
-                {
-                    page.Orientation = PageOrientation.Portrait;
-                    //gfx.DrawImageRotated(image, 0, 0);
-                    gfx.DrawImage(image, 0, 0);
-                }
-                else
-                {
-                    page.Orientation = PageOrientation.Landscape;
-                    gfx.DrawImage(image, 0, 0);
+                label1.Text = "Merging images, please wait...";
+                label1.Refresh();
+                PdfDocument pdfdocument = new PdfDocument();
+                var path = fileDialog.FileNames[0];
+                int index = path.LastIndexOf('\\');
+                newDirectoryPath = path.Substring(0, index + 1) + "JPG2PDF(" + DateTime.Now.ToString("h:mm:ss").Replace(':', '_')+")";
 
-                }
-                // Save and start View
+                foreach (var file in fileDialog.FileNames)
+                {
+                    // Add to pdf all the files from FileDialog
+                    PdfPage page = pdfdocument.AddPage();
+                    // temp incrementing
+                    page_num++;
+                    XImage image = XImage.FromFile(file);
+                    double wid_inches = image.PixelWidth / image.HorizontalResolution;
+                    double heig_inches = image.PixelHeight / image.HorizontalResolution;
 
+                    if (image.PixelWidth < image.PixelHeight)
+                        page.Orientation = PageOrientation.Portrait;
+                    else
+                        page.Orientation = PageOrientation.Landscape;
+                    
+                    page.Width = wid_inches*72;
+                    page.Height = heig_inches*72;
+        
+                    XGraphics gfx = XGraphics.FromPdfPage(page);
+                    
+
+                    gfx.DrawImage(image, 0, 0, page.Width, page.Height);
+                }
+                // Save
+                pdfdocument.Save(newDirectoryPath+".pdf");
+                label1.Text = "Finished.";
+                MessageBox.Show("Merging finished succesfully.\n File is located at "+ newDirectoryPath+".pdf");
             }
-            pdfdocument.Save(@"C:\Users\semen\source\repos\PDF_Merge_Convert2"+"\\new_pdf.pdf");
+            else
+            {
+                MessageBox.Show("You din not select the files!\n Select the files to convert.", "Select files error.");
+            }
         }
     }
 }
