@@ -74,58 +74,48 @@ namespace PDF_Merge_Convert
                 MessageBox.Show("The process failed: {0}", ex.ToString());
             }
 
-            backgroundWorker1.RunWorkerAsync();
-            
-            
-        }
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
-            ConvertImgAsync();
-        }
-        private void ConvertImgAsync()
-        {
             foreach (var file in fileDialog.FileNames)
             {
                 FileInfo info = new FileInfo(file);
-                currentFile = file;
+                UpdateLabel(file);
+               // currentFile = file;
                 int found = info.Name.IndexOf(".heic");
                 if (found == -1)
                 {
                     found = info.Name.IndexOf(".HEIC");
                 }
                 String outputPath = newDirectoryPath + "\\" + info.Name.Substring(0, found) + ".jpg";
-
-                if (!File.Exists(outputPath))
-                {
-                    using (MagickImage image = new MagickImage(info.FullName))
-                    {
-                        // Save frame as jpg
-                        image.Write(outputPath);
-                    }
-                }
+         
+                Parallel.Invoke(() => 
+                                {
+                                    MessageBox.Show("Started new task");
+                                    ConvertImage(outputPath, info);
+                                });
+               
+                ConvertLabel.Text = "Finished";
+                MessageBox.Show("Converting finished!\nCheck:" + newDirectoryPath, "Finished");
 
                 //backgroundWorker1.DoWork += backgroundWorker1_DoWork;
             }
-            
-
         }
-
-        private void BackgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void ConvertImage(String outputPath, FileInfo info)
         {
-            ConvertLabel.Text = "Finished";
-            MessageBox.Show("Converting finished!\nCheck:" + newDirectoryPath, "Finished");
-            this.backgroundWorker1.CancelAsync();
+            if (!File.Exists(outputPath))
+            {
+                using (MagickImage image = new MagickImage(info.FullName))
+                {
+                    // Save frame as jpg
+                    image.Write(outputPath);
+                }
+            }
         }
+           
         private void UpdateLabel(String file)
         { 
             int index = file.LastIndexOf('\\') + 1;
             // Setting the text of Conversion label with the current file
             ConvertLabel.Text = file.Substring(index, file.Length - index);
         }
-        private void BackgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            MessageBox.Show(e.ToString());
-            //UpdateLabel();
-        }
+
     }
 }

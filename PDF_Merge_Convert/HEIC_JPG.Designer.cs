@@ -78,13 +78,6 @@
             this.ConvertLabel.Size = new System.Drawing.Size(0, 13);
             this.ConvertLabel.TabIndex = 3;
             // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.WorkerSupportsCancellation = true;
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.BackgroundWorker1_ProgressChanged);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker1_RunWorkerCompleted);
-            // 
             // HEIC_JPG
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
