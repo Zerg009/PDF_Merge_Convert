@@ -14,7 +14,6 @@ using PdfSharp.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.IO;
-
 namespace PDF_Merge_Convert
 {
     public partial class JPG2PDF : Form
@@ -58,15 +57,15 @@ namespace PDF_Merge_Convert
                 PdfDocument pdfdocument = new PdfDocument();
                 
                 newDirectoryPath = path.Substring(0, index + 1) + "JPG2PDF(" + DateTime.Now.ToString("h:mm:ss").Replace(':', '_')+")";
-                // #TODO: DID NOT FIND THE PATH
                 Compress(path.Substring(0, index + 1));
 
                 foreach (var file in fileDialog.FileNames)
                 {
                     // Add to pdf all the files from FileDialog
+                    // #TODO: PdfEdit.Drawing
                     PdfPage page = pdfdocument.AddPage();
                     XImage image = XImage.FromFile(file);
-                 
+                    XImage img2 = new XImage(image);
                     double wid_inches = image.PixelWidth / image.HorizontalResolution;
                     double heig_inches = image.PixelHeight / image.HorizontalResolution;
 
