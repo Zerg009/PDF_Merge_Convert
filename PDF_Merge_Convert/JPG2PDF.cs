@@ -57,15 +57,20 @@ namespace PDF_Merge_Convert
                 PdfDocument pdfdocument = new PdfDocument();
                 
                 newDirectoryPath = path.Substring(0, index + 1) + "JPG2PDF(" + DateTime.Now.ToString("h:mm:ss").Replace(':', '_')+")";
-                Compress(path.Substring(0, index + 1));
+               // Compress(path.Substring(0, index + 1));
 
                 foreach (var file in fileDialog.FileNames)
                 {
                     // Add to pdf all the files from FileDialog
-                    // #TODO: PdfEdit.Drawing
+                    //# TODO : Doubling the size of image
+                    Image img = Image.FromFile(file);
+                    Image imgPhoto = ScaleByPercent(img, 50);
                     PdfPage page = pdfdocument.AddPage();
-                    XImage image = XImage.FromFile(file);
-                    XImage img2 = new XImage(image);
+                    XImage image = XImage.FromGdiPlusImage(imgPhoto);
+                    // memstream
+                    img.Dispose();
+                    //imgPhoto.Dispose();
+
                     double wid_inches = image.PixelWidth / image.HorizontalResolution;
                     double heig_inches = image.PixelHeight / image.HorizontalResolution;
 
@@ -73,9 +78,9 @@ namespace PDF_Merge_Convert
                         page.Orientation = PageOrientation.Portrait;
                     else
                         page.Orientation = PageOrientation.Landscape;
-                    
                     page.Width = wid_inches*72;
                     page.Height = heig_inches*72;
+
         
                     XGraphics gfx = XGraphics.FromPdfPage(page);
                     
@@ -128,24 +133,26 @@ namespace PDF_Merge_Convert
         {
             return filters.Split('|').SelectMany(filter => System.IO.Directory.GetFiles(sourceFolder, filter, searchOption)).ToArray();
         }
-        private void Compress(String newDirectoryPath)
+        private Image Compress(Image img)
         {
-            DirectoryInfo d = new DirectoryInfo(newDirectoryPath); //Assuming Test is your Folder
+            //DirectoryInfo d = new DirectoryInfo(newDirectoryPath); //Assuming Test is your Folder
 
-            string[] Files = GetAllFiles(newDirectoryPath,"*.jpeg|*.jpg.|*.png",SearchOption.TopDirectoryOnly); //Getting Text 
+            //string[] Files = GetAllFiles(newDirectoryPath,"*.jpeg|*.jpg.|*.png",SearchOption.TopDirectoryOnly); //Getting Text 
 
-            foreach (var file in Files)
-            {
-                int index = file.LastIndexOf('\\');
+            //foreach (var file in Files)
+            //{
+            //    int index = file.LastIndexOf('\\');
 
-                Image img = Image.FromFile(file);
+            //    Image img = Image.FromFile(file);
                 Image imgPhoto = ScaleByPercent(img, 50);
-                int len = file.Length - index;
-                String FileName = file.Substring(index + 1, len - 1);
+            //    int len = file.Length - index;
+            /*    String FileName = file.Substring(index + 1, len - 1);
                 String outputPath = newDirectoryPath + "reduced_size_" + FileName;
                 imgPhoto.Save(outputPath, ImageFormat.Jpeg);
                 imgPhoto.Dispose();
-            }
+            */
+            //}
+            return img;
             
         }
     }
