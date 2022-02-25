@@ -58,25 +58,46 @@ namespace PDF_Merge_Convert
                 
                 newDirectoryPath = path.Substring(0, index + 1) + "JPG2PDF(" + DateTime.Now.ToString("h:mm:ss").Replace(':', '_')+")";
                 // 1. Compress selected images and store them in new TEMP folder
-
-
-                // 2. Take all the compressed file and make the pdf
-                //string[] Files = GetAllFiles(newDirectoryPath,"*.jpeg|*.jpg.|*.png",SearchOption.TopDirectoryOnly); //Getting Text 
-
+                String tempFolderPath = path.Substring(0, index + 1) + "TempImages";
+                DirectoryInfo d = Directory.CreateDirectory(tempFolderPath); //Assuming Test is your Folder
+                d.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
                 foreach (var file in fileDialog.FileNames)
                 {
-                    // Add to pdf all the files from FileDialog
-                    //# TODO : Doubling the size of image
+                    int indexFile = file.LastIndexOf('\\');
                     Image img = Image.FromFile(file);
-                    Image imgPhoto = ScaleByPercent(img, 50);
-                    PdfPage page = pdfdocument.AddPage();
-                    //XImage image = XImage.FromGdiPlusImage(imgPhoto);
+                    Image imgPhoto;
+                    long size = new System.IO.FileInfo(file).Length;
+                    if (size >= 2000000)
+                    {
+                        imgPhoto = ScaleByPercent(img, 50);
+                    }else if(size >= 1000000)
+                    {
+                        imgPhoto = ScaleByPercent(img, 75);
+                    }
+                    else
+                    {
+                        imgPhoto = img;
+                    }
+                    int len = file.Length - indexFile;
+                    String FileName = file.Substring(indexFile + 1, len - 1);
+                    String outputPath = tempFolderPath + "\\" + "reduced_size_" + FileName;
+                    imgPhoto.Save(outputPath, ImageFormat.Jpeg);
+                    imgPhoto.Dispose();
                     
-                    // memstream
-                    img.Dispose();
-                    //imgPhoto.Dispose();
+                }
 
-                    double wid_inches = image.PixelWidth / image.HorizontalResolution;
+                // 2. Take all the compressed file and make the pdf
+                string[] Files = GetAllFiles(tempFolderPath,"*.jpeg|*.jpg.|*.png",SearchOption.TopDirectoryOnly); //Getting Text 
+
+                foreach (var file in Files)
+                {
+                    //Image img = Image.FromFile(file);
+                    PdfPage page = pdfdocument.AddPage();
+                    using (XImage image = XImage.FromFile(file))
+                    {
+
+
+                        double wid_inches = image.PixelWidth / image.HorizontalResolution;
                     double heig_inches = image.PixelHeight / image.HorizontalResolution;
 
                     if (image.PixelWidth < image.PixelHeight)
@@ -84,18 +105,21 @@ namespace PDF_Merge_Convert
                     else
                         page.Orientation = PageOrientation.Landscape;
                     page.Width = wid_inches*72;
-                    page.Height = heig_inches*72;
-
-        
+                    page.Height = heig_inches * 72;
                     XGraphics gfx = XGraphics.FromPdfPage(page);
-                    
-
                     gfx.DrawImage(image, 0, 0, page.Width, page.Height);
+                    
+                    }
                 }
                 // Save
                 pdfdocument.Save(newDirectoryPath+".pdf");
+                pdfdocument.Close();
                 label1.Text = "Finished.";
                 MessageBox.Show("Merging finished succesfully.\n File is located at "+ newDirectoryPath+".pdf");
+                if (Directory.Exists(tempFolderPath))
+                {
+                    Directory.Delete(tempFolderPath,true);
+                }
             }
             else
             {
