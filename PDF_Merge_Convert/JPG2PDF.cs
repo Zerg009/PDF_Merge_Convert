@@ -57,7 +57,11 @@ namespace PDF_Merge_Convert
                 PdfDocument pdfdocument = new PdfDocument();
                 
                 newDirectoryPath = path.Substring(0, index + 1) + "JPG2PDF(" + DateTime.Now.ToString("h:mm:ss").Replace(':', '_')+")";
-               // Compress(path.Substring(0, index + 1));
+                // 1. Compress selected images and store them in new TEMP folder
+
+
+                // 2. Take all the compressed file and make the pdf
+                //string[] Files = GetAllFiles(newDirectoryPath,"*.jpeg|*.jpg.|*.png",SearchOption.TopDirectoryOnly); //Getting Text 
 
                 foreach (var file in fileDialog.FileNames)
                 {
@@ -66,7 +70,8 @@ namespace PDF_Merge_Convert
                     Image img = Image.FromFile(file);
                     Image imgPhoto = ScaleByPercent(img, 50);
                     PdfPage page = pdfdocument.AddPage();
-                    XImage image = XImage.FromGdiPlusImage(imgPhoto);
+                    //XImage image = XImage.FromGdiPlusImage(imgPhoto);
+                    
                     // memstream
                     img.Dispose();
                     //imgPhoto.Dispose();
