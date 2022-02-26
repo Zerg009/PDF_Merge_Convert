@@ -8,4 +8,4 @@ The project used the following libraries :
   2. PDFsharp (PDFSharp-gdi library) (https://github.com/empira/PDFsharp)
   3. Syroot.Windows.IO.KnownFolders (installed via VS nuget)
 
-Download here: 
+Download here: https://github.com/Zerg009/PDF_Merge_Convert/releases/tag/1.0.0
