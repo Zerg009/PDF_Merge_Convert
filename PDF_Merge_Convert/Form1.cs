@@ -33,5 +33,11 @@ namespace PDF_Merge_Convert
             JPG2PDF form2 = new JPG2PDF();
             form2.Show();
         }
+
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            Doc_to_PDF form3 = new Doc_to_PDF();
+            form3.Show();
+        }
     }
 }

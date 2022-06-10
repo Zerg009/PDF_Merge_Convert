@@ -18,7 +18,6 @@ namespace PDF_Merge_Convert
 {
     public partial class JPG2PDF : Form
     {
-        int page_num = -1;
         readonly OpenFileDialog fileDialog = new OpenFileDialog();
 
         public JPG2PDF()
